@@ -1,0 +1,29 @@
+body {
+	background-color: black;
+	text-align: center;
+	font-family: monospace, monospace;
+	color: white;
+}
+
+body p {
+	max-width: 45%;
+	margin: auto;
+	margin-top: 30px;
+}
+
+body button {
+	background-color: white;
+	color: black;
+	margin-top: 10%;
+}
+
+.middle_img {
+	max-width: 70%;
+	margin: auto;
+	margin-top: 30px;
+}
+
+#options p:hover {
+	color: blue;
+	cursor: pointer;
+}

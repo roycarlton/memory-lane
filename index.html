@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello room</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <link href="style.css" rel="stylesheet" type="text/css" media="all">
+	<script src="script.js"></script> 
+  </head>
+  
+  <body onclick="startPage();">
+  
+	<audio id="audioPlayer">
+		<source src="chelt_peace.wav" type="audio/wav">
+	</audio>
+	
+	<button id="audioButton" onclick="toggleAudio('audioPlayer', 'audioButton');">Listen</button>
+	<br>
+  
+	<img class="middle_img" src="images/chelt_peace.png">
+	
+	<p id="clickPrompt">(click anywhere...)</p>
+	
+	<div id="options" style="display: none;">
+	</div>
+
+  </body>
+</html>
