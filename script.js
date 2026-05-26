@@ -2,12 +2,19 @@ var firstClick = true;
 var gDisplayText;
 var gDisplayElement;
 var gOptionsElement;
+var gAudioElement;
+var gAudioSource;
+var gAudioHrefs;
+var gAudioButtonElement;
+var gImageElement;
 var gIndex;
 var audioPlaying;
 
 var prompts;
 var options;
 var responses;
+var gImageHrefs;
+
 
 function consoleTest(s) {
 	console.log(s);
@@ -52,22 +59,20 @@ function typeTextRecursive(displayIndex, maxIndex, delay, isOptions) {
 	}
 }
 
-function toggleAudio(audioElementID, audioButtonID) {
-	console.log("toggleAudio")
+function toggleAudio() {
+	console.log("toggleAudio");
 	if (firstClick) { return; }
 	
-	let audioButtonElement = document.getElementById(audioButtonID);
-	let audioElement = document.getElementById(audioElementID);
 	if (audioPlaying) {
-		audioElement.pause();
-		audioButtonElement.innerText = "Listen";
-		audioPlaying = false;
+		gAudioElement.pause();
+		gAudioButtonElement.innerText = "Listen";
 	}
 	else {
-		audioElement.play();
-		audioButtonElement.innerText = "Pause";
-		audioPlaying = true;
+		gAudioElement.play();
+		gAudioButtonElement.innerText = "Pause";
 	}
+	audioPlaying = !(audioPlaying)
+	console.log("audioPlaying " + audioPlaying);
 }
 
 function promptResponse(chosenOption) {
@@ -76,7 +81,7 @@ function promptResponse(chosenOption) {
 	gDisplayElement.innerText = "";
 	gDisplayText = responses[gIndex][chosenOption];
 	
-	typeTextRecursive(0, (gDisplayText.length - 1), 50, false)
+	typeTextRecursive(0, (gDisplayText.length - 1), 20, false)
 }
 
 function startStage() {
@@ -88,13 +93,21 @@ function startStage() {
 		return;
 	}
 	
-	// Update image and audio links too
+	if (audioPlaying) { toggleAudio(); }
+	gAudioSource.src = "audio/" + gAudioHrefs[gIndex];
+	gAudioElement.load();
+	
+	gImageElement.src = "images/" + gImageHrefs[gIndex];
+	
+	console.log("gAudioSource.src " + gAudioSource.src);
+	console.log("gImageElement.src " + gImageElement.src);
+	
 	gDisplayElement.innerText = "";
 	hideOptions();
 	
 	gDisplayText = prompts[gIndex];
 		
-	typeTextRecursive(0, (gDisplayText.length - 1), 50, true);
+	typeTextRecursive(0, (gDisplayText.length - 1), 20, true);
 }
 
 function startPage() {
@@ -105,12 +118,18 @@ function startPage() {
 		gDisplayText = "";
 		gDisplayElement = document.getElementById("clickPrompt");
 		gOptionsElement = document.getElementById("options");
+		gAudioElement = document.getElementById("audio0");
+		gAudioButtonElement = document.getElementById("audioButton");
+		gAudioSource = document.getElementById("audio_source");
+		gImageElement = document.getElementById("mem_image");
 		gIndex = -1;
 		audioPlaying = false;
 
-		prompts = ["Are these your memories? You know you can't go back, right?"];
+		prompts = ["Are these your memories? You know you can't go back, right?", "test prompt"];
 		options = [["I know", "I want to go back"], ['temp']];
 		responses = [["Good", 'Too bad'], ["temp1", "temp2"]];
+		gImageHrefs = ["chelt_peace.png", "chelt_peace2.png"]
+		gAudioHrefs = ["chelt_peace.wav", "test.mp3"]
 		
 		startStage();
 	}

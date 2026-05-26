@@ -11,14 +11,14 @@
   
   <body onclick="startPage();">
   
-	<audio id="audioPlayer">
-		<source src="chelt_peace.wav" type="audio/wav">
+	<audio id="audio0">
+		<source id="audio_source" src="audio/chelt_peace.wav" type="audio/wav">
 	</audio>
 	
 	<button id="audioButton" onclick="toggleAudio('audioPlayer', 'audioButton');">Listen</button>
 	<br>
   
-	<img class="middle_img" src="images/chelt_peace.png">
+	<img class="middle_img" id="mem_image" src="images/chelt_peace.png">
 	
 	<p id="clickPrompt">(click anywhere...)</p>
 	
