@@ -24,6 +24,10 @@ body button {
 	margin-top: 30px;
 }
 
+.hover_over:hover {
+	cursor: pointer;
+}
+
 #options p:hover {
 	color: blue;
 	cursor: pointer;

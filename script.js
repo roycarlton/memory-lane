@@ -3,6 +3,7 @@ var gDisplayText;
 var gDisplayElement;
 var gOptionsElement;
 var gAudioElement;
+var gBgAudioElement;
 var gAudioSource;
 var gAudioHrefs;
 var gAudioButtonElement;
@@ -20,6 +21,31 @@ function consoleTest(s) {
 	console.log(s);
 }
 
+function lookingBack() {
+	console.log("Looking back");
+	gIndex += 1;
+	if (gIndex >= gImageHrefs.length) { gIndex = 0; }
+	gImageElement.src = "images/" + gImageHrefs[gIndex];
+	if (audioPlaying) { toggleAudio(); }
+	gAudioSource.src = "audio/" + gAudioHrefs[gIndex];
+	gAudioElement.load();
+}
+
+function goHome() {
+	localStorage.setItem("stayingHere", "0")
+	window.location.href = "/home";
+}
+
+function stayHere() {
+	console.log("Stay here");
+	localStorage.setItem("stayingHere", "1");
+	gDisplayElement.style.display = "none";
+	gOptionsElement.style.display = "none";
+	gImageElement.onclick = lookingBack;
+	gImageElement.classList.add("hover_over");
+	document.body.onclick = "";
+}
+
 function addOption (id, optionText, onClick) {
 	let para = document.createElement("p");
 	para.setAttribute("id", id);
@@ -30,8 +56,14 @@ function addOption (id, optionText, onClick) {
 
 function displayOptions(isOptions) {
 	if (isOptions) {
-		for (let i=0; i < options[gIndex].length; i++) {
-			addOption(("option" + i.toString()), options[gIndex][i], "promptResponse(" + i.toString() + ")");
+		if (gIndex < 6) {
+			for (let i=0; i < options[gIndex].length; i++) {
+				addOption(("option" + i.toString()), options[gIndex][i], "promptResponse(" + i.toString() + ")");
+			}
+		}
+		else{
+			addOption("option0", options[gIndex][0], "goHome()");
+			addOption("option1", options[gIndex][1], "stayHere()");
 		}
 	}
 	else {
@@ -65,9 +97,11 @@ function toggleAudio() {
 	
 	if (audioPlaying) {
 		gAudioElement.pause();
+		gBgAudioElement.play();
 		gAudioButtonElement.innerText = "Listen";
 	}
 	else {
+		gBgAudioElement.pause();
 		gAudioElement.play();
 		gAudioButtonElement.innerText = "Pause";
 	}
@@ -113,23 +147,38 @@ function startStage() {
 function startPage() {
 	console.log("startPage");
 	if (firstClick) {
+		
 		firstClick = false;
 		
 		gDisplayText = "";
 		gDisplayElement = document.getElementById("clickPrompt");
 		gOptionsElement = document.getElementById("options");
 		gAudioElement = document.getElementById("audio0");
+		gBgAudioElement = document.getElementById("bgMusic");
 		gAudioButtonElement = document.getElementById("audioButton");
 		gAudioSource = document.getElementById("audio_source");
 		gImageElement = document.getElementById("mem_image");
 		gIndex = -1;
 		audioPlaying = false;
 
-		prompts = ["Are these your memories? You know you can't go back, right?", "test prompt"];
-		options = [["I know", "I want to go back"], ['temp']];
-		responses = [["Good", 'Too bad'], ["temp1", "temp2"]];
-		gImageHrefs = ["chelt_peace.png", "chelt_peace2.png"]
-		gAudioHrefs = ["chelt_peace.wav", "test.mp3"]
+		prompts = ["Are these your memories? You know you can't go back, right?", "This one's from the same day. Was it a good day?", "Look, I get it. You like this bittersweet feeling, but you have to stop looking back, it'll do you no good.", "If you keep looking back, you'll miss what's ahead.", "There's more of this to come you know? It happened once, it can happen again.", "Oh, now this one's really pushing it.", "Final chance, take my hand and come back to the present. If you stay any longer, I can't help you."];
+		options = [["I know.", "I want to go back."], ["No.", "I can't remember."], ["Okay.", "I want to live in this feeling forever."], ["I want to see what's ahead.", "Who cares?"], ["Really?", "Liar."], ["I'm sorry.", "Go away."], ["Accept", "Refuse"]];
+		responses = [["Good.", 'Too bad.'], ["I see...", "You can just pretend it was, no one will know."], ["I know it hurts.", "..."], ["I'm so glad.", "Stop it."], ["Of course.", "I'm so sorry."], ["It's okay.", "Don't do this."]];
+		gImageHrefs = ["chelt_peace.png", "chelt_peace2.png", "langley_peace.png", "station_peace.png", "ports_peace2.jpg", "ports_peace4.jpg", "ports_peace3.jpg"];
+		gAudioHrefs = ["chelt_peace.wav", "chelt_peace2.wav", "langley_peace.wav", "station_peace.wav", "ports_peace2.wav", "ports_peace4.wav", "ports_peace3.wav"];
+		
+		gBgAudioElement.play();
+		
+		if (localStorage.getItem("stayingHere") !== null) {
+			if (localStorage.getItem("stayingHere") == "1") {
+				gIndex = 0;
+				stayHere();
+				return;
+			}
+			else if (localStorage.getItem("stayingHere") == "0") {
+				alert("You're back? Just be careful, don't get stuck here.");
+			}
+		}
 		
 		startStage();
 	}
