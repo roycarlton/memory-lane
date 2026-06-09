@@ -16,13 +16,7 @@ var options;
 var responses;
 var gImageHrefs;
 
-
-function consoleTest(s) {
-	console.log(s);
-}
-
 function lookingBack() {
-	console.log("Looking back");
 	gIndex += 1;
 	if (gIndex >= gImageHrefs.length) { gIndex = 0; }
 	gImageElement.src = "images/" + gImageHrefs[gIndex];
@@ -37,7 +31,6 @@ function goHome() {
 }
 
 function stayHere() {
-	console.log("Stay here");
 	localStorage.setItem("stayingHere", "1");
 	gDisplayElement.style.display = "none";
 	gOptionsElement.style.display = "none";
@@ -56,7 +49,7 @@ function addOption (id, optionText, onClick) {
 
 function displayOptions(isOptions) {
 	if (isOptions) {
-		if (gIndex < 6) {
+		if (gIndex < (prompts.length-1)) {
 			for (let i=0; i < options[gIndex].length; i++) {
 				addOption(("option" + i.toString()), options[gIndex][i], "promptResponse(" + i.toString() + ")");
 			}
@@ -85,14 +78,13 @@ function typeTextRecursive(displayIndex, maxIndex, delay, isOptions) {
 	}
 	else {
 		let tempChar = gDisplayText.charAt(displayIndex);
-		if (tempChar == " ") { tempChar = "&nbsp;"; }
+		// if (tempChar == " ") { tempChar = "&nbsp;"; }
 		gDisplayElement.innerHTML += tempChar;
 		setTimeout(typeTextRecursive, delay, displayIndex+1, maxIndex, delay, isOptions);
 	}
 }
 
 function toggleAudio() {
-	console.log("toggleAudio");
 	if (firstClick) { return; }
 	
 	if (audioPlaying) {
@@ -105,8 +97,7 @@ function toggleAudio() {
 		gAudioElement.play();
 		gAudioButtonElement.innerText = "Pause";
 	}
-	audioPlaying = !(audioPlaying)
-	console.log("audioPlaying " + audioPlaying);
+	audioPlaying = !(audioPlaying);
 }
 
 function promptResponse(chosenOption) {
@@ -119,11 +110,9 @@ function promptResponse(chosenOption) {
 }
 
 function startStage() {
-	console.log("startStage");
 	gIndex += 1;
 	if (gIndex >= prompts.length) {
 		// Game's over
-		console.log("Finished");
 		return;
 	}
 	
@@ -132,9 +121,6 @@ function startStage() {
 	gAudioElement.load();
 	
 	gImageElement.src = "images/" + gImageHrefs[gIndex];
-	
-	console.log("gAudioSource.src " + gAudioSource.src);
-	console.log("gImageElement.src " + gImageElement.src);
 	
 	gDisplayElement.innerText = "";
 	hideOptions();
@@ -145,7 +131,6 @@ function startStage() {
 }
 
 function startPage() {
-	console.log("startPage");
 	if (firstClick) {
 		
 		firstClick = false;
@@ -161,11 +146,11 @@ function startPage() {
 		gIndex = -1;
 		audioPlaying = false;
 
-		prompts = ["Are these your memories? You know you can't go back, right?", "This one's from the same day. Was it a good day?", "Look, I get it. You like this bittersweet feeling, but you have to stop looking back, it'll do you no good.", "If you keep looking back, you'll miss what's ahead.", "There's more of this to come you know? It happened once, it can happen again.", "Oh, now this one's really pushing it.", "Final chance, take my hand and come back to the present. If you stay any longer, I can't help you."];
-		options = [["I know.", "I want to go back."], ["No.", "I can't remember."], ["Okay.", "I want to live in this feeling forever."], ["I want to see what's ahead.", "Who cares?"], ["Really?", "Liar."], ["I'm sorry.", "Go away."], ["Accept", "Refuse"]];
-		responses = [["Good.", 'Too bad.'], ["I see...", "You can just pretend it was, no one will know."], ["I know it hurts.", "..."], ["I'm so glad.", "Stop it."], ["Of course.", "I'm so sorry."], ["It's okay.", "Don't do this."]];
-		gImageHrefs = ["chelt_peace.png", "chelt_peace2.png", "langley_peace.png", "station_peace.png", "ports_peace2.jpg", "ports_peace4.jpg", "ports_peace3.jpg"];
-		gAudioHrefs = ["chelt_peace.wav", "chelt_peace2.wav", "langley_peace.wav", "station_peace.wav", "ports_peace2.wav", "ports_peace4.wav", "ports_peace3.wav"];
+		prompts = ["Are these your memories? You know you can't go back, right?", "This one's from the same day. Was it a good day?", "There's no point in dwelling on it, it's over now.", "Look, I get it. You like this bittersweet feeling, but you have to stop looking back, it'll do you no good.", "If you keep looking back, you'll miss what's ahead.", "There's more of this to come you know? It happened once, it can happen again.", "Oh, now this one's really pushing it.", "Final chance, take my hand and come back to the present. If you stay any longer, I can't help you."];
+		options = [["I know.", "I want to go back."], ["No.", "I can't remember."], ["I've moved on.", "I need more time."], ["Okay.", "I want to live in this feeling forever."], ["I want to see what's ahead.", "Who cares?"], ["Really?", "Liar."], ["I'm sorry.", "Go away."], ["Accept", "Refuse"]];
+		responses = [["Good.", 'Too bad.'], ["I see...", "You can just pretend it was, no one will know."], ["Have you?", "Why? There's nothing more to be done."], ["I know it hurts.", "..."], ["I'm so glad.", "Stop it."], ["Of course.", "I'm so sorry."], ["It's okay.", "Don't do this."]];
+		gImageHrefs = ["chelt_peace.png", "chelt_peace2.png", "card_peace2.jpg", "langley_peace.png", "station_peace.png", "ports_peace2.jpg", "ports_peace4.jpg", "ports_peace3.jpg"];
+		gAudioHrefs = ["chelt_peace.wav", "chelt_peace2.wav", "card_peace2.wav", "langley_peace.wav", "station_peace.wav", "ports_peace2.wav", "ports_peace4.wav", "ports_peace3.wav"];
 		
 		gBgAudioElement.play();
 		
